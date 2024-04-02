@@ -1,42 +1,41 @@
 import "./App.css";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-// Display
+
+const schema = Yup.object({
+  userName: Yup.string()
+    .min(6, "Must be minimum 6 characters")
+    .max(20, "Must be maximum 20 characters")
+    .required("Required"),
+  email: Yup.string().email("Invalid email address").required("Required"),
+  password: Yup.string()
+    .min(8, "Must be at least 8 characters")
+    .required("Required"),
+  passwordConfirmation: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Required"),
+  dateOfBirth: Yup.date().required("Required"),
+  phoneNumber: Yup.number()
+    .typeError("Phone number must be a number")
+    .required("Required"),
+  acceptTerms: Yup.boolean().required("Required"),
+});
+
 const errorMessage = (message) => (
-  <p class="validation-error-message">{message}</p>
+  <p className="validation-error-message">{message}</p>
 );
 
 const SignupForm = () => {
   return (
     <Formik
-      initialValues={{
-        userName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        passwordConfirmation: "",
-        dateOfBirth: "",
-        phoneNumber: "",
-        acceptTerms: false,
+      initialValues={{ undefined }}
+      validationSchema={schema}
+      onSubmit={(values, { setSubmitting }) => {
+        setTimeout(() => {
+          alert(JSON.stringify(values, null, 2));
+          setSubmitting(false);
+        }, 400);
       }}
-      validationSchema={Yup.object({
-        userName: Yup.string()
-          .min(6, "Must be minimum 6 characters")
-          .max(20, "Must be maximum 20 characters")
-          .required("Required"),
-        email: Yup.string().email("Invalid email address").required("Required"),
-        password: Yup.string()
-          .min(8, "Must be at least 8 characters")
-          .required("Required"),
-        passwordConfirmation: Yup.string()
-          .oneOf([Yup.ref("password"), null], "Passwords must match")
-          .required("Required"),
-        dateOfBirth: Yup.date().required("Required"),
-        phoneNumber: Yup.number()
-          .typeError("Phone number must be a number")
-          .required("Required"),
-        acceptTerms: Yup.boolean(),
-      })}
     >
       <Form>
         <label htmlFor="userName">Username: </label>
