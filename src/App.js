@@ -14,7 +14,9 @@ const schema = Yup.object({
   passwordConfirmation: Yup.string()
     .oneOf([Yup.ref("password"), null], "Passwords must match")
     .required("Required"),
-  dateOfBirth: Yup.date().required("Required"),
+  dateOfBirth: Yup.date()
+    .max(new Date(), "Date of birth must not be in the future")
+    .required("Required"),
   phoneNumber: Yup.number()
     .typeError("Phone number must be a number")
     .required("Required"),
