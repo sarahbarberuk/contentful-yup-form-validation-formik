@@ -20,7 +20,9 @@ const schema = Yup.object({
   phoneNumber: Yup.number()
     .typeError("Phone number must be a number")
     .required("Required"),
-  acceptTerms: Yup.boolean().required("Required"),
+  acceptTerms: Yup.boolean()
+    .required("Required")
+    .oneOf([true], "You must accept the terms"),
 });
 
 const errorMessage = (message) => (
